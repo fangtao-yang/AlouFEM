@@ -15,6 +15,7 @@
 #include "debug.def"
 #include "verbose.def"
 
+#include <string>
 
 Domain :: Domain ()
    // Constructor. Creates a new domain.
@@ -96,6 +97,17 @@ char*  Domain :: giveDataFileName ()
       strcpy (dataFileName,s) ;}
 
    return dataFileName ;
+}
+
+void Domain :: getDataFileName (std::string & name)
+{
+  if (! dataFileName) {
+	  dataFileName = new char[name.length()+1] ;
+	strcpy (dataFileName,name.c_str()) ;
+  }
+  else {
+    printf ("Domain's dataFileName has already been defined. \n") ;
+  }
 }
 
 
@@ -203,15 +215,21 @@ int  Domain :: giveNumberOfElements ()
 FILE*  Domain :: giveOutputStream ()
    // Returns an output stream on the data file of the receiver.
 {
-   if (! outputStream) {
-      if (inputStream) {                // flush input stream, if it exists
-	 delete inputStream ;
-	 inputStream = NULL ;}
-      outputStream = fopen (dataFileName,"a") ;}
-
-   return outputStream ;
+  if (! outputStream) {
+	if (inputStream) {                // flush input stream, if it exists
+	  delete inputStream ;
+	  inputStream = NULL ;
+	}
+	outputStream = fopen (dataFileName,"a") ;
+  }
+  return outputStream ;
 }
 
+FILE* Domain :: getNewOutputStream (std::string & vector_output_filename)
+{
+  outputStream = fopen (vector_output_filename.c_str(),"a") ;
+  return outputStream ;
+}
 
 TimeIntegrationScheme*  Domain :: giveTimeIntegrationScheme ()
    // Returns the time integration algorithm. Creates it if it does not

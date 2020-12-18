@@ -1,0 +1,49 @@
+file PL4.DAT :
+- 2x2 element rectangular plane strain-elasticity structure.
+  see part III (figure 8 in page 12) of the manual.
+- you get the fastest execution efficiency if you do not use compiling option
+  DEBUG (see file 'debug.def') and if you use file 'main2.c' instead of file
+  'main.c' for defining function 'main'.
+
+TimeIntegrationScheme *
+1  class Static *
+**
+
+TimeStep 1
+1  dt 1. *
+**
+
+Material 1
+1  E 2.e11  n 0.3  d 8.e3  t 1.e-3 *
+**
+
+Load 3
+1  class BoundaryCondition  loadTimeFunction 1  conditions 1  d 0. *
+2  class NodalLoad          loadTimeFunction 2  components 2 2000.000000 0. *
+3  class NodalLoad          loadTimeFunction 2  components 2 4000.000000 0. *
+**
+
+LoadTimeFunction 2
+1  class ConstantFunction    f(t) 1. *
+2  class PeakFunction  t 1.  f(t) 1. *
+**
+
+Element 4
+1   class PN  mat 1  nodes   1   4   5   2 *
+2   class PN  mat 1  nodes   2   5   6   3 *
+3   class PN  mat 1  nodes   4   7   8   5 *
+4   class PN  mat 1  nodes   5   8   9   6 *
+**
+
+Node 9
+1   nDofs 2  coord 2 0.000 0.000  bcOnDof1 1  bcOnDof2 1  *
+2   nDofs 2  coord 2 0.000 0.200  bcOnDof1 1  *
+3   nDofs 2  coord 2 0.000 0.400  bcOnDof1 1  *
+4   nDofs 2  coord 2 0.450 0.000  bcOnDof2 1  *
+5   nDofs 2  coord 2 0.450 0.200  *
+6   nDofs 2  coord 2 0.450 0.400  *
+7   nDofs 2  coord 2 0.900 0.000  bcOnDof2 1  loads 1 2  *
+8   nDofs 2  coord 2 0.900 0.200  loads 1 3  *
+9   nDofs 2  coord 2 0.900 0.400  loads 1 2  *
+**
+
