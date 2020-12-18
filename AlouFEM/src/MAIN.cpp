@@ -18,6 +18,9 @@
 #include "freestor.h"
 #include "compiler.def"
 
+#include <iostream>
+#include <string>
+
 
 void main ()
 {
@@ -30,6 +33,10 @@ void main ()
    Domain* mesh ;
 
    mesh = new Domain() ;
+
+   std::string name = "PL4.DAT";
+   //std::cout << name << std::endl;
+   mesh -> getDataFileName (name);
    mesh -> solveYourself() ;
    delete mesh ;
 }

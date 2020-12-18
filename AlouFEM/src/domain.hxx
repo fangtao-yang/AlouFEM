@@ -7,6 +7,9 @@
 
 #include "list.hxx"
 #include <stdio.h>
+
+#include <string>
+
 class Element ; class Node ; class Material ; class TimeIntegrationScheme ;
 class TimeStep ; class Load ; class LoadTimeFunction ; class LinearSystem ;
 class FileReader ;
@@ -41,6 +44,7 @@ class Domain
 {
    private :
       char*       	      dataFileName ;
+	  std::string		  vectorOutPutFileName;
       List*        	      elementList ;
       List*        	      nodeList ;
       List*        	      materialList ;
@@ -76,8 +80,10 @@ class Domain
 
       // input / output
       char*              giveDataFileName () ;
+	  void               getDataFileName (std::string & name) ;
       FileReader*        giveInputStream () ;
       FILE*              giveOutputStream () ;
+	  FILE*              getNewOutputStream (std::string & vector_output_filename) ;
       int                readNumberOf (char*) ;
 } ;
 
