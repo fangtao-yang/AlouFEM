@@ -61,13 +61,13 @@ class Dof
       int                 hasBc () ;
       int                 hasIc () ;
       int                 hasIcOn (char) ;
-      void                print (char,TimeStep*) ;
+      void                print (char,TimeStep*, bool use_vec_format) ;
       void                print (char,char,char,TimeStep*) ;
-      void                printNewmarkOutputAt (TimeStep* stepN)
+      void                printNewmarkOutputAt (TimeStep* stepN, bool use_vec_format)
 				      { this -> print('d','v','a',stepN) ;}
-      void                printOutputAt (TimeStep*) ;
-      void                printStaticOutputAt (TimeStep* stepN)
-				      { this -> print('d',stepN) ;}
+      void                printOutputAt (TimeStep*, bool use_vec_format) ;
+      void                printStaticOutputAt (TimeStep* stepN, bool use_vec_format)
+				      { this -> print('d',stepN, use_vec_format) ;}
       void                printYourself () ;
       void                updateYourself () ;
 } ;

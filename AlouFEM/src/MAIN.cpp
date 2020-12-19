@@ -34,9 +34,12 @@ void main ()
 
    mesh = new Domain() ;
 
-   std::string name = "PL4.DAT";
+   std::string filename = "PL4.DAT";
    //std::cout << name << std::endl;
-   mesh -> getDataFileName (name);
+   mesh -> getDataFileName (filename);
+
+   filename.assign("stress_strain.out");
+   mesh -> setVectorOutPutFileName(filename);
    mesh -> solveYourself() ;
    delete mesh ;
 }

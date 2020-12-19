@@ -186,7 +186,7 @@ void  Node :: instanciateYourself ()
 }
 
 
-void  Node :: printOutputAt (TimeStep* stepN)
+void  Node :: printOutputAt (TimeStep* stepN, bool use_vec_format)
 {
    int  i ;
 
@@ -195,7 +195,7 @@ void  Node :: printOutputAt (TimeStep* stepN)
 #  endif
 
    for (i=1 ; i<=numberOfDofs ; i++)
-      this -> giveDof(i) -> printOutputAt(stepN) ;
+      this -> giveDof(i) -> printOutputAt(stepN, use_vec_format) ;
 }
 
 
