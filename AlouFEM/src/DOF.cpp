@@ -266,22 +266,27 @@ int  Dof :: hasIcOn (char u)
 }
 
 
-void  Dof :: print (char u, TimeStep* stepN)
-   // Prints in the data file the unknown 'u' (for example, the displacement
-   // 'd') of the receiver, at stepN.
+void  Dof :: print (char u, TimeStep* stepN, bool use_vec_format)
+  // Prints in the data file the unknown 'u' (for example, the displacement
+  // 'd') of the receiver, at stepN.
 {
-   FILE*  File ;
-   int    nod ;
-   double x ;
+  FILE*  File ;
+  int    nod ;
+  double x ;
 
-   File = node -> giveDomain() -> giveOutputStream() ;
-   nod  = node -> giveNumber() ;
-   x    = this -> giveUnknown(u,stepN) ;
-   if (number == 1)
-      fprintf (File,"node%4d  ",nod) ;
-   else
-      fprintf (File,"          ") ;
-   fprintf (File,"dof %d   %c % .8e\n",number,u,x) ;
+  File = node -> giveDomain() -> giveOutputStream() ;
+  nod  = node -> giveNumber() ;
+  x    = this -> giveUnknown(u,stepN) ;
+  if (!use_vec_format) {
+	if (number == 1)
+	  fprintf (File,"node%4d  ",nod) ;
+	else
+	  fprintf (File,"          ") ;
+	fprintf (File,"dof %d   %c % .8e\n",number,u,x) ;
+  }
+  else {
+	fprintf (File,"% .8e\n",x) ;
+  }
 }
 
 
@@ -307,20 +312,21 @@ void  Dof :: print (char u1,char u2,char u3,TimeStep* stepN)
 }
 
 
-void  Dof :: printOutputAt (TimeStep* stepN)
-   // Prints in the data file the unknowns of the receiver at time step
-   // stepN. Switches to the correct formula.
+void  Dof :: printOutputAt (TimeStep* stepN, bool use_vec_format)
+  // Prints in the data file the unknowns of the receiver at time step
+  // stepN. Switches to the correct formula.
 {
-   TimeIntegrationScheme* scheme ;
+  TimeIntegrationScheme* scheme ;
 
-   scheme = node -> giveDomain() -> giveTimeIntegrationScheme() ;
-   if (scheme -> isStatic())
-      this -> printStaticOutputAt(stepN) ;
-   else if (scheme->isNewmark())
-      this -> printNewmarkOutputAt(stepN) ;
-   else {
-      printf ("Error : unknown time integration scheme : %c\n",scheme) ;
-      exit(0) ;}
+  scheme = node -> giveDomain() -> giveTimeIntegrationScheme() ;
+  if (scheme -> isStatic())
+	this -> printStaticOutputAt(stepN, use_vec_format) ;
+  else if (scheme->isNewmark())
+	this -> printNewmarkOutputAt(stepN, use_vec_format) ;
+  else {
+	printf ("Error : unknown time integration scheme : %c\n",scheme) ;
+	exit(0) ;
+  }
 }
 
 

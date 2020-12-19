@@ -66,7 +66,7 @@ class Domain
       void               solveYourselfAt (TimeStep*) ;
       void               formTheSystemAt (TimeStep*) ;
       int                giveNumberOfElements () ;
-      void               terminate (TimeStep*) ;
+      void               terminate (TimeStep*, bool use_vec_format) ;
 
       // management of the mesh components
       Element*           giveElement (int) ;
@@ -83,8 +83,11 @@ class Domain
 	  void               getDataFileName (std::string & name) ;
       FileReader*        giveInputStream () ;
       FILE*              giveOutputStream () ;
-	  FILE*              getNewOutputStream (std::string & vector_output_filename) ;
+	  FILE*              gvieNewOutputStream () ;
       int                readNumberOf (char*) ;
+
+	  // member operation
+	  void				setVectorOutPutFileName(std::string & name);
 } ;
 
 #define domain_hxx

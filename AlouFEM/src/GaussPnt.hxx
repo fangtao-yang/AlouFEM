@@ -4,6 +4,9 @@
  
 
 #include "flotarry.hxx"
+
+#include <string>
+
 class Element ;
 
 
@@ -49,6 +52,7 @@ class GaussPoint
       void         letStrainVectorBe (FloatArray* v) { strainVector = v ;}
       void         letStressVectorBe (FloatArray* v) { stressVector = v ;}
       void         printOutput () ;
+	  void         printOutput_vec (std::string &component);
       void         updateYourself () ;
 } ;
 

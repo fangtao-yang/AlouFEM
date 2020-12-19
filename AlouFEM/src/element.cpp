@@ -586,25 +586,33 @@ Element*  Element :: ofType (char* aClass)
 }
 
 
-void  Element :: printOutputAt (TimeStep* stepN)
+void  Element :: printOutputAt (TimeStep* stepN, bool use_vec_format)
    // Performs end-of-step operations.
 {
-   int         i ;
-   GaussPoint* gp ;
-   FILE*       file ;
+  int         i ;
+  GaussPoint* gp ;
+  FILE*       file ;
 
 #  ifdef VERBOSE
-      printf ("element %d printing output\n",number) ;
+  printf ("element %d printing output\n",number) ;
 #  endif
 
-   file = domain -> giveOutputStream() ;
-   fprintf (file,"element %d :\n",number) ;
+  file = domain -> giveOutputStream() ;
+  if (!use_vec_format)
+	fprintf (file,"element %d :\n",number) ;
 
-   for (i=1 ; i<=numberOfGaussPoints ; i++) {
-      gp = gaussPointArray[i-1] ;
-      this -> computeStrainVector(gp,stepN) ;
-      this -> computeStressVector(gp,stepN) ;
-      gp   -> printOutput() ;}
+  for (i=1 ; i<=numberOfGaussPoints ; i++) {
+	gp = gaussPointArray[i-1] ;
+	this -> computeStrainVector(gp,stepN) ;
+	this -> computeStressVector(gp,stepN) ;
+	if (use_vec_format) {
+	  std::string comp = "stress_strain";
+	  gp->printOutput_vec(comp);
+	}
+	else {
+	  gp   -> printOutput() ;
+	}
+  }
 }
 
 

@@ -225,9 +225,10 @@ FILE*  Domain :: giveOutputStream ()
   return outputStream ;
 }
 
-FILE* Domain :: getNewOutputStream (std::string & vector_output_filename)
+FILE* Domain :: gvieNewOutputStream ()
 {
-  outputStream = fopen (vector_output_filename.c_str(),"a") ;
+  outputStream = fopen (vectorOutPutFileName.c_str(),"w") ;
+  //rewind(outputStream);
   return outputStream ;
 }
 
@@ -297,6 +298,10 @@ int  Domain :: readNumberOf (char* type)
    return atoi(value) ;
 }
 
+void  Domain :: setVectorOutPutFileName(std::string & name) {
+  vectorOutPutFileName.assign(name);
+}
+
 
 void  Domain :: solveYourself ()
    // Solves the problem described by the receiver.
@@ -319,45 +324,53 @@ void  Domain :: solveYourselfAt (TimeStep* stepN)
      linearSystem -> solveYourself() ;
 
    printf ("start step termination   : %.1f\n",timeNow()) ;
-     this -> terminate(stepN) ;
+     this -> terminate(stepN, true) ;
 
    printf ("end of step :              %.1f\n",timeNow()) ;
 }
 
 
-void  Domain :: terminate (TimeStep* stepN)
+void  Domain :: terminate (TimeStep* stepN, bool use_vec_format)
    // Performs all operations (printings and updates) for terminating time
    // step stepN.
 {
-   TimeStep* nextStep ;
-   Element*  elem ;
-   int       i,nNodes ;
-   FILE*     File ;
+  TimeStep* nextStep ;
+  Element*  elem ;
+  int       i,nNodes ;
+  FILE*     File ;
 
-   File = this -> giveOutputStream() ;
-   fprintf (File,"\nSolution %d\n",stepN->giveNumber()) ;
+  if (vectorOutPutFileName.empty()) {
+	File = this -> giveOutputStream() ;
+  }
+  else {
+	File = this -> gvieNewOutputStream() ;
+  }
 
-   nNodes = nodeList -> giveSize() ;
-   for (i=1 ; i<=nNodes ; i++)
-      this -> giveNode(i) -> printOutputAt(stepN) ;
+  if (!use_vec_format)
+	fprintf (File,"\nSolution %d\n",stepN->giveNumber()) ;
 
-   for (i=1 ; i<=numberOfElements ; i++) {
-      elem = this -> giveElement(i) ;
-      elem -> printOutputAt(stepN) ;
-      elem -> updateYourself() ;}
+  nNodes = nodeList -> giveSize() ;
+  for (i=1 ; i<=nNodes ; i++)
+	this -> giveNode(i) -> printOutputAt(stepN, use_vec_format) ;
 
-   nNodes = nodeList -> giveSize() ;
-   for (i=1 ; i<=nNodes ; i++)
-      this -> giveNode(i) -> updateYourself() ;
+  for (i=1 ; i<=numberOfElements ; i++) {
+	elem = this -> giveElement(i) ;
+	elem -> printOutputAt(stepN, use_vec_format) ;
+	elem -> updateYourself() ;
+  }
 
-   if (stepN->isNotTheLastStep()) {
-      nextStep = new TimeStep(stepN->giveNumber()+1,timeIntegrationScheme) ;
-      if (nextStep->requiresNewLhs())
-	 linearSystem -> updateYourself() ;
-      else
-	 linearSystem -> updateYourselfExceptLhs() ;
-      delete nextStep ;}
+  nNodes = nodeList -> giveSize() ;
+  for (i=1 ; i<=nNodes ; i++)
+	this -> giveNode(i) -> updateYourself() ;
 
-   timeIntegrationScheme -> updateYourself() ;
+  if (stepN->isNotTheLastStep()) {
+	nextStep = new TimeStep(stepN->giveNumber()+1,timeIntegrationScheme) ;
+	if (nextStep->requiresNewLhs())
+	  linearSystem -> updateYourself() ;
+	else
+	  linearSystem -> updateYourselfExceptLhs() ;
+	delete nextStep ;}
+
+  timeIntegrationScheme -> updateYourself() ;
 }
 

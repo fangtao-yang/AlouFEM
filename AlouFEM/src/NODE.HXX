@@ -58,7 +58,7 @@ class Node : public FEMComponent
       IntArray*    giveLocationArray () ;
 
       // time step termination
-      void         printOutputAt (TimeStep*) ;
+      void         printOutputAt (TimeStep*, bool use_vec_format) ;
       void         updateYourself () ;
 
       // miscellaneous

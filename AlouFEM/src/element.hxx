@@ -117,7 +117,7 @@ class Element : public FEMComponent
       void                  instanciateYourself () ;
 
       // time step termination
-      void                  printOutputAt (TimeStep*) ;
+      void                  printOutputAt (TimeStep*, bool use_vec_format) ;
       void                  updateYourself () ;
 
       // definition
