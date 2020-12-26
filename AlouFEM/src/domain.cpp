@@ -16,6 +16,7 @@
 #include "verbose.def"
 
 #include <string>
+#include <iostream>
 
 Domain :: Domain ()
    // Constructor. Creates a new domain.
@@ -88,13 +89,15 @@ void  Domain :: formTheSystemAt (TimeStep* stepN)
 char*  Domain :: giveDataFileName ()
    // Returns the name of the file containing the data of the problem.
 {
-   char s[64] ;
+   //char s[64] ;
+   std::string str;
 
    if (! dataFileName) {
       printf ("please enter the name of the data file : \n") ;
-      gets (s) ;
-      dataFileName = new char[strlen(s)+1] ;
-      strcpy (dataFileName,s) ;}
+      //gets (s) ;
+	  std::cin >> str;
+      dataFileName = new char[strlen(str.c_str())+1] ;
+      strcpy (dataFileName, str.c_str()) ;}
 
    return dataFileName ;
 }

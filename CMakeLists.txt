@@ -30,7 +30,7 @@ endif()
 
 
 ADD_SUBDIRECTORY(AlouFEM)
-
+ADD_SUBDIRECTORY(boost_test)
 
 
 
