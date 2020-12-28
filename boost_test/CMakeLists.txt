@@ -1,3 +1,4 @@
 
 
 ADD_SUBDIRECTORY(exception)
+ADD_SUBDIRECTORY(smart_ptr)
