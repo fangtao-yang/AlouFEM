@@ -6,11 +6,14 @@
 #ifndef domain_hxx
 
 #include "list.hxx"
+//#include "output.hxx"
 #include <stdio.h>
 
 #include <string>
 
-class Element ; class Node ; class Material ; class TimeIntegrationScheme ;
+#include <boost/shared_ptr.hpp>
+
+class OutPutContatiner; class Element ; class Node ; class Material ; class TimeIntegrationScheme ;
 class TimeStep ; class Load ; class LoadTimeFunction ; class LinearSystem ;
 class FileReader ;
 
@@ -42,6 +45,7 @@ class Domain
      one when the other one is to be used.
 */
 {
+  typedef boost::shared_ptr<OutPutContatiner> OutPutContatiner_ptr_type;
    private :
       char*       	      dataFileName ;
 	  std::string		  vectorOutPutFileName;
@@ -55,6 +59,8 @@ class Domain
       LinearSystem*  	      linearSystem ;
       FileReader*  	      inputStream ;
       FILE*      	      outputStream ;
+
+	  OutPutContatiner_ptr_type   outPutContatiner;
 
    public :
       Domain () ;                             // constructors
@@ -86,8 +92,12 @@ class Domain
 	  FILE*              gvieNewOutputStream () ;
       int                readNumberOf (char*) ;
 
+	  void outPutContatiner_Init();
+	  OutPutContatiner_ptr_type & getOutputContainers() { return outPutContatiner; };
+
 	  // member operation
 	  void				setVectorOutPutFileName(std::string & name);
+
 } ;
 
 #define domain_hxx

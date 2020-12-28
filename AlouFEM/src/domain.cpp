@@ -318,6 +318,9 @@ void  Domain :: solveYourselfAt (TimeStep* stepN)
    // Solves the problem at the current time step.
 {
    printf ("start forming the system : %.1f\n",timeNow()) ;
+
+   double time = stepN -> giveTime();
+
    this -> formTheSystemAt(stepN) ;
 
    printf ("start solving the system : %.1f\n",timeNow()) ;
@@ -374,3 +377,5 @@ void  Domain :: terminate (TimeStep* stepN, bool use_vec_format)
   timeIntegrationScheme -> updateYourself() ;
 }
 
+
+void outPutContatiner_Init();

@@ -10,6 +10,7 @@
 #include "flotmtrx.hxx"
 class TimeStep ; class Node ; class Material ; class GaussPoint ;
 class FloatMatrix ; class FloatArray ; class IntArray ;
+class OutPutContatiner;
 
 
 class Element : public FEMComponent
@@ -48,6 +49,7 @@ class Element : public FEMComponent
      .printing its output in the data file and updating itself ;
 */
 {
+  typedef boost::shared_ptr<OutPutContatiner> OutPutContatiner_ptr_type;
    protected :
       int           numberOfNodes ;
       IntArray*     nodeArray ;
@@ -118,6 +120,7 @@ class Element : public FEMComponent
 
       // time step termination
       void                  printOutputAt (TimeStep*, bool use_vec_format) ;
+	  void                  recordAt (TimeStep* stepN);
       void                  updateYourself () ;
 
       // definition
