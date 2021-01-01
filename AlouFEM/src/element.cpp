@@ -615,6 +615,34 @@ void  Element :: printOutputAt (TimeStep* stepN, bool use_vec_format)
   }
 }
 
+void  Element :: recordAt (TimeStep* stepN)
+   // Performs end-of-step operations.
+{
+  int         i ;
+  GaussPoint* gp ;
+  FILE*       file ;
+  //OutPutContatiner_ptr_type outPutContainer_ptr;
+
+#  ifdef VERBOSE
+  printf ("element %d printing output\n",number) ;
+#  endif
+
+  //outPutContainer_ptr = domain -> getOutputContainers();
+
+  for (i=1 ; i<=numberOfGaussPoints ; i++) {
+	gp = gaussPointArray[i-1] ;
+	this -> computeStrainVector(gp,stepN) ;
+	this -> computeStressVector(gp,stepN) ;
+	if (true) {
+	  std::string comp = "stress_strain";
+	  gp->printOutput_vec(comp);
+	}
+	else {
+	  gp   -> printOutput() ;
+	}
+  }
+}
+
 
 Element*  Element :: typed ()
    // Returns a new element, which has the same number than the receiver,

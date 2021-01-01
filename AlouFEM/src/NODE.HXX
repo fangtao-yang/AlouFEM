@@ -65,6 +65,7 @@ class Node : public FEMComponent
       char*        giveClassName (char* s)      { return strcpy(s,"Node") ;}
       void         instanciateYourself () ;
       void         printYourself () ;
+			void         recordAt(TimeStep*);
 } ;
 
 

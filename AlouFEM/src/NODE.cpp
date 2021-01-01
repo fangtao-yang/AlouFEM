@@ -198,6 +198,10 @@ void  Node :: printOutputAt (TimeStep* stepN, bool use_vec_format)
       this -> giveDof(i) -> printOutputAt(stepN, use_vec_format) ;
 }
 
+void Node::recordAt(TimeStep* stepN) {
+	for (int i = 1; i <= numberOfDofs; i++)
+		giveDof(i)->recordAt(stepN);
+}
 
 void  Node :: printYourself ()
    // Prints the receiver on screen.
@@ -223,6 +227,7 @@ void  Node :: printYourself ()
       printf ("loadArray = nil \n") ;
    printf ("\n") ;
 }
+
 
 
 void  Node :: updateYourself ()

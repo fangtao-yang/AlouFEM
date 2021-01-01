@@ -1,5 +1,6 @@
 //   file DOF.CXX
  
+#pragma
 #include "dof.hxx"
 #include "node.hxx"
 #include "domain.hxx"
@@ -15,6 +16,10 @@
 #include "debug.def"
 #include <stdlib.h>
 #include <ctype.h>
+
+//#include "output.hxx"
+
+#include <iostream>
 
 
 Dof :: Dof (int i, Node* aNode)
@@ -289,6 +294,13 @@ void  Dof :: print (char u, TimeStep* stepN, bool use_vec_format)
   }
 }
 
+void  Dof::record(char u, TimeStep* stepN)
+// Prints in the data file the unknown 'u' (for example, the displacement
+// 'd') of the receiver, at stepN.
+{
+	node->giveDomain()->getOutPutContainer_ptr()->add_disp(stepN->giveTime(), giveUnknown(u, stepN));
+}
+
 
 void  Dof :: print (char u1,char u2,char u3,TimeStep* stepN)
    // Prints in the data file the unknowns 'u1' (for example, the displacement
@@ -312,6 +324,8 @@ void  Dof :: print (char u1,char u2,char u3,TimeStep* stepN)
 }
 
 
+
+
 void  Dof :: printOutputAt (TimeStep* stepN, bool use_vec_format)
   // Prints in the data file the unknowns of the receiver at time step
   // stepN. Switches to the correct formula.
@@ -325,8 +339,27 @@ void  Dof :: printOutputAt (TimeStep* stepN, bool use_vec_format)
 	this -> printNewmarkOutputAt(stepN, use_vec_format) ;
   else {
 	printf ("Error : unknown time integration scheme : %c\n",scheme) ;
-	exit(0) ;
+	exit(1) ;
   }
+}
+
+void  Dof::recordAt(TimeStep* stepN)
+// Prints in the data file the unknowns of the receiver at time step
+// stepN. Switches to the correct formula.
+{
+	TimeIntegrationScheme* scheme;
+
+	scheme = node->giveDomain()->giveTimeIntegrationScheme();
+	if (scheme->isStatic())
+		this->recordStaticAt(stepN);
+	else if (scheme->isNewmark()) {
+		std::cout << "Error : Newmark record in Dof is not completed" << std::endl;
+		exit(1);
+	}
+	else {
+		printf("Error : unknown time integration scheme : %c\n", scheme);
+		exit(1);
+	}
 }
 
 

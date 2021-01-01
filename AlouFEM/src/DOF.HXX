@@ -5,7 +5,10 @@
 
 #include "dictionr.hxx"
 #include <stdio.h>
-class Domain ; class Node ; class TimeStep ; class BoundaryCondition ; 
+
+#include "domain.hxx"
+
+/*class Domain ;*/ class Node ; class TimeStep ; class BoundaryCondition ; 
 class InitialCondition ;
 
 
@@ -36,16 +39,10 @@ class Dof
 {
    enum { FALSE , TRUE } ;
 
-   private :
-      int          number ;
-      Node*        node ;
-      int          equationNumber ;
-      int          bc ;
-      int          ic ;
-      Dictionary*  unknowns ;
-      Dictionary*  pastUnknowns ;
-
+	 typedef Domain::OutPutContainer_ptr_type OutPutContainer_ptr_type;
+	 typedef OutPutContainer::output_container_ptr_type output_container_ptr_type;
    public :
+
       Dof (int,Node*) ;                                       // constructor
       ~Dof ()   { delete unknowns ; delete pastUnknowns ;}    // destructor.
 
@@ -63,12 +60,23 @@ class Dof
       int                 hasIcOn (char) ;
       void                print (char,TimeStep*, bool use_vec_format) ;
       void                print (char,char,char,TimeStep*) ;
-      void                printNewmarkOutputAt (TimeStep* stepN, bool use_vec_format)
-				      { this -> print('d','v','a',stepN) ;}
-      void                printOutputAt (TimeStep*, bool use_vec_format) ;
-      void                printStaticOutputAt (TimeStep* stepN, bool use_vec_format)
-				      { this -> print('d',stepN, use_vec_format) ;}
+			void                printOutputAt(TimeStep*, bool use_vec_format);
+			void                printNewmarkOutputAt(TimeStep* stepN, bool use_vec_format) { this->print('d', 'v', 'a', stepN); }
+			void                printStaticOutputAt(TimeStep* stepN, bool use_vec_format) { this->print('d', stepN, use_vec_format); }
       void                printYourself () ;
       void                updateYourself () ;
+
+			void                record(char u, TimeStep* stepN);
+			void                recordAt(TimeStep* stepN);
+			void                recordStaticAt(TimeStep* stepN) { record('d', stepN); }
+
+private:
+	int          number;
+	Node*        node;
+	int          equationNumber;
+	int          bc;
+	int          ic;
+	Dictionary*  unknowns;
+	Dictionary*  pastUnknowns;
 } ;
 
