@@ -621,13 +621,13 @@ void  Element :: recordAt (TimeStep* stepN)
   int         i ;
   GaussPoint* gp ;
   FILE*       file ;
-  OutPutContatiner_ptr_type outPutContainer_ptr;
+  //OutPutContatiner_ptr_type outPutContainer_ptr;
 
 #  ifdef VERBOSE
   printf ("element %d printing output\n",number) ;
 #  endif
 
-  outPutContainer_ptr = domain -> getOutputContainers();
+  //outPutContainer_ptr = domain -> getOutputContainers();
 
   for (i=1 ; i<=numberOfGaussPoints ; i++) {
 	gp = gaussPointArray[i-1] ;

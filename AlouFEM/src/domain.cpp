@@ -1,4 +1,7 @@
 //   file DOMAIN.CXX
+
+#include "boost/shared_ptr.hpp"
+#include "boost/make_shared.hpp"
  
 #include "domain.hxx"
 #include "element.hxx"
@@ -17,6 +20,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 Domain :: Domain ()
    // Constructor. Creates a new domain.
@@ -81,6 +85,7 @@ void  Domain :: formTheSystemAt (TimeStep* stepN)
       this -> giveElement(i) -> assembleYourselfAt(stepN) ;
 
    nNodes = this -> readNumberOf("Node") ;
+	 _nb_node = nNodes;
    for (i=1 ; i<=nNodes ; i++)
       this -> giveNode(i) -> assembleYourLoadsAt(stepN) ;
 }
@@ -317,22 +322,35 @@ void  Domain :: solveYourself ()
 }
 
 
-void  Domain :: solveYourselfAt (TimeStep* stepN)
-   // Solves the problem at the current time step.
+void  Domain::solveYourselfAt(TimeStep* stepN)
+// Solves the problem at the current time step.
 {
-   printf ("start forming the system : %.1f\n",timeNow()) ;
+	printf("start forming the system : %.1f\n", timeNow());
 
-   double time = stepN -> giveTime();
+	double time = stepN->giveTime();
 
-   this -> formTheSystemAt(stepN) ;
+	this->formTheSystemAt(stepN);
 
-   printf ("start solving the system : %.1f\n",timeNow()) ;
-     linearSystem -> solveYourself() ;
+	outPutContainer_Init((size_type)_nb_node, 2, (size_type)numberOfElements, 4);
+	outPutContatiner_ptr->print_info();
 
-   printf ("start step termination   : %.1f\n",timeNow()) ;
-     this -> terminate(stepN, true) ;
+	outPutContatiner_ptr->add_time_sequencer((time_type)time);
+	outPutContatiner_ptr->print_container("disp");
+	outPutContatiner_ptr->print_container("stress");
+	outPutContatiner_ptr->print_container("strain");
 
-   printf ("end of step :              %.1f\n",timeNow()) ;
+	printf("start solving the system : %.1f\n", timeNow());
+	linearSystem->solveYourself();
+
+	printf("start step termination   : %.1f\n", timeNow());
+	this->terminate(stepN, true);
+
+	std::cout << "start step record : " << timeNow() << std::endl;
+	recordAt(stepN);
+	//outPutContatiner_ptr->print_container("disp");
+
+
+	printf("end of step :              %.1f\n", timeNow());
 }
 
 
@@ -381,4 +399,26 @@ void  Domain :: terminate (TimeStep* stepN, bool use_vec_format)
 }
 
 
-void outPutContatiner_Init();
+
+void Domain::outPutContainer_Init() {
+	outPutContatiner_ptr = boost::make_shared<OutPutContainer>();
+	outPutContatiner_ptr->print_info();
+}
+
+void Domain::outPutContainer_Init(size_type nb_node, size_type nb_dof, size_type nb_ele, size_type nb_gauss) {
+	outPutContatiner_ptr = boost::make_shared<OutPutContainer>(nb_node, nb_dof, nb_ele, nb_gauss);
+
+	outPutContatiner_ptr->print_info();
+}
+
+
+void Domain::recordAt(TimeStep* stepN) {
+
+	int	nb_node = nodeList->giveSize();
+	for (int i = 1; i <= nb_node; i++)
+		giveNode(i)->recordAt(stepN);
+}
+
+void Domain::exportVecAtLast(const std::string & fileName, const std::string & containerName) const {
+	outPutContatiner_ptr->exportVecAtLast(fileName, containerName);
+}

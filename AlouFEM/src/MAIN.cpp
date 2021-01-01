@@ -22,26 +22,42 @@
 #include <string>
 
 
-void main ()
+int main(int argc, char* argv[])
 {
 	/*
 #ifdef BORLAND
-   set_new_handler (&freeStoreError) ;     // prevents memory overflow
+	 set_new_handler (&freeStoreError) ;     // prevents memory overflow
 #endif
-   */
+	 */
 
-   Domain* mesh ;
+	if (argc > 1) {
 
-   mesh = new Domain() ;
 
-   std::string filename = "PL4.DAT";
-   //std::cout << name << std::endl;
-   mesh -> getDataFileName (filename);
 
-   filename.assign("stress_strain.out");
-   mesh -> setVectorOutPutFileName(filename);
-   mesh -> solveYourself() ;
-   delete mesh ;
+		Domain* mesh;
+
+		mesh = new Domain();
+
+		std::string filename(argv[1]);
+		//std::string filename = "PL4.DAT";
+		//std::cout << name << std::endl;
+		mesh->getDataFileName(filename);
+
+		//filename.assign("stress_strain.out");
+		//mesh->setVectorOutPutFileName(filename);
+		mesh->solveYourself();
+
+		mesh->getOutPutContainer_ptr()->print_container("disp");
+		mesh->exportVecAtLast("disp.out", "disp");
+		delete mesh;
+
+		return 0;
+
+	}
+	else {
+		std::cout << "no input file is given" << std::endl;
+		exit(1);
+	}
 }
 
 
