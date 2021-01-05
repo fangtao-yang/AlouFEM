@@ -69,6 +69,7 @@ Domain :: ~Domain ()
    delete loadTimeFunctionList ;
    delete timeIntegrationScheme ;
    delete linearSystem ;
+   delete linearSystem;
    delete inputStream ;
    if (outputStream)
       fclose(outputStream) ;
