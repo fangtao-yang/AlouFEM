@@ -51,6 +51,7 @@ class FloatMatrix : public Matrix
       FloatMatrix*  plusDiagonalMatrix (DiagonalMatrix*) ;
       void          plusProduct (FloatMatrix*,FloatMatrix*,double) ;
       virtual void  printYourself () ;
+			virtual void printYourself_large();
       FloatMatrix*  rotatedWith (FloatMatrix*) ;
       FloatMatrix*  symmetrized () ;
       FloatMatrix*  times (double f) ;

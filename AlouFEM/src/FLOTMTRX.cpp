@@ -194,47 +194,65 @@ FloatMatrix*  FloatMatrix :: plusDiagonalMatrix (DiagonalMatrix* aMatrix)
 }
 
 
-void  FloatMatrix :: plusProduct (FloatMatrix* a, FloatMatrix* b, double dV)
-   // Adds to the receiver the product  a(transposed).b dV .
-   // If the receiver has a null size, it is expanded.
-   // This method assumes that both the receiver and the product above are
-   // symmetric matrices, and therefore computes only the upper half of the
-   // receiver ; the lower half is not modified. Other advantage : it does
-   // not compute the transposition of matrix a.
+void  FloatMatrix::plusProduct(FloatMatrix* a, FloatMatrix* b, double dV)
+// Adds to the receiver the product  a(transposed).b dV .
+// If the receiver has a null size, it is expanded.
+// This method assumes that both the receiver and the product above are
+// symmetric matrices, and therefore computes only the upper half of the
+// receiver ; the lower half is not modified. Other advantage : it does
+// not compute the transposition of matrix a.
 {
-   int    i,j,p ;
-   double coeff ;
+	int    i, j, p;
+	double coeff;
 
-   double *P1,*P2 ;
+	double *P1, *P2;
 
-   if (nRows*nColumns == 0) {
-      nRows  = nColumns = a->nColumns ;
-      values = allocDouble(nRows*nColumns) ;}
+	if (nRows*nColumns == 0) {
+		nRows = nColumns = a->nColumns;
+		values = allocDouble(nRows*nColumns);
+	}
 
-   p = a->nRows ;
-   for (i=1 ; i<=nRows ; i++)
-      for (j=i ; j<=nColumns ; j++) {
-	 P1 = &(a->at(1,i)) ;
-	 P2 = &(b->at(1,j)) ;
-	 coeff = dotProduct(P1,P2,p) ;
-	 this->at(i,j) += coeff * dV ;}
+	p = a->nRows;
+	for (i = 1; i <= nRows; i++)
+		for (j = i; j <= nColumns; j++) {
+			P1 = &(a->at(1, i));
+			P2 = &(b->at(1, j));
+			coeff = dotProduct(P1, P2, p);
+			this->at(i, j) += coeff * dV;
+		}
 }
 
 
-void  FloatMatrix :: printYourself ()
-   // Prints the receiver on screen.
+void  FloatMatrix::printYourself()
+// Prints the receiver on screen.
 {
-   int i,j ; 
+	int i, j;
 
-   printf ("FloatMatrix with dimensions : %d %d\n",
-	    nRows,nColumns) ;
-   if (nRows<=10 && nColumns<=8)
-      for (i=1 ; i<=nRows ; ++i) {
-	 for (j=1 ; j<=nColumns && j<10 ; ++j)
-	    printf ("%f  ",this->at(i,j)) ;
-	 printf ("\n") ; }
-   else 
-      printf ("   large matrix : coefficients not printed \n") ;
+	printf("FloatMatrix with dimensions : %d %d\n", nRows, nColumns);
+	if (nRows <= 10 && nColumns <= 8)
+		for (i = 1; i <= nRows; ++i) {
+			for (j = 1; j <= nColumns && j < 10; ++j)
+				printf("%f  ", this->at(i, j));
+			printf("\n");
+		}
+	else
+		printf("   large matrix : coefficients not printed \n");
+}
+
+void  FloatMatrix::printYourself_large()
+// Prints the receiver on screen.
+{
+	int i, j;
+
+	printf("FloatMatrix with dimensions : %d %d\n", nRows, nColumns);
+	//if (nRows <= 10 && nColumns <= 8)
+		for (i = 1; i <= nRows; ++i) {
+			for (j = 1; j <= nColumns; ++j)
+				printf("%f  ", this->at(i, j));
+			printf("\n");
+		}
+	//else
+	//	printf("   large matrix : coefficients not printed \n");
 }
 
 

@@ -57,46 +57,54 @@ FloatMatrix*  Skyline :: AsFloatMatrix ()
 }
 
 
-void  Skyline :: assemble (FloatMatrix* mat, IntArray* loc)
-   // Assembles the elemental matrix 'mat' to the receiver, using 'loc' as a
-   // location array. The values in ke corresponding to a zero coefficient
-   // in loc are not assembled.
+void  Skyline::assemble(FloatMatrix* mat, IntArray* loc)
+// Assembles the elemental matrix 'mat' to the receiver, using 'loc' as a
+// location array. The values in ke corresponding to a zero coefficient
+// in loc are not assembled.
 {
-   int     i,j,ii,jj,dim ;
-   Column* columnJJ ;
+	int     i, j, ii, jj, dim;
+	Column* columnJJ;
 
 #  ifdef DEBUG
-      dim = mat -> giveNumberOfRows() ;
-      if (dim != loc->giveSize()) {
-	 printf ("error : dimension of 'mat' and 'loc' mismatch \n") ;
-	 exit(0) ;}
-      this -> checkSizeTowards(loc) ;
+	dim = mat->giveNumberOfRows();
+	if (dim != loc->giveSize()) {
+		printf("error : dimension of 'mat' and 'loc' mismatch \n");
+		exit(0);
+	}
+	this->checkSizeTowards(loc);
 #  endif
 
-   dim = mat -> giveNumberOfRows() ;
+	dim = mat->giveNumberOfRows();
 
-   if (mat -> isDiagonal()) {               // mat is a diagonal matrix
-      for (j=1 ; j<=dim ; j++) {
-         jj = loc->at(j) ;
-	 if (jj) {
-	    columnJJ = this->giveColumn(jj) ;
+	if (mat->isDiagonal()) {               // mat is a diagonal matrix
+		for (j = 1; j <= dim; j++) {
+			jj = loc->at(j);
+			if (jj) {
+				columnJJ = this->giveColumn(jj);
 #           ifdef DEBUG
-	       columnJJ -> checkSizeTowards(loc,DIAGONAL) ;
+				columnJJ->checkSizeTowards(loc, DIAGONAL);
 #           endif
-	    columnJJ->at(jj) += mat->at(j,j) ;}}}
+				columnJJ->at(jj) += mat->at(j, j);
+			}
+		}
+	}
 
-   else {                                   // mat is a full matrix
-      for (j=1 ; j<=dim ; j++) {
-	 jj = loc->at(j) ;
-	 if (jj) {
-	    columnJJ = this->giveColumn(jj) ;
+	else {                                   // mat is a full matrix
+		for (j = 1; j <= dim; j++) {
+			jj = loc->at(j);
+			if (jj) {
+				columnJJ = this->giveColumn(jj);
 #           ifdef DEBUG
-	       columnJJ -> checkSizeTowards(loc,NOT_DIAGONAL) ;
+				columnJJ->checkSizeTowards(loc, NOT_DIAGONAL);
 #           endif
-	    for (i=1 ; i<=dim ; i++) {
-	       ii = loc->at(i) ;
-	       if (ii && ii<=jj)
-		  columnJJ->at(ii) += mat->at(i,j) ;}}}}
+				for (i = 1; i <= dim; i++) {
+					ii = loc->at(i);
+					if (ii && ii <= jj)
+						columnJJ->at(ii) += mat->at(i, j);
+				}
+			}
+		}
+	}
 }
 
 
@@ -161,50 +169,56 @@ void  Skyline :: createColumn (int j,int s)
 }
 
 
-Skyline*  Skyline :: diagonalScalingWith (FloatArray* y)
-   // Scales y by the diagonal of the receiver. Returns the receiver.
+Skyline*  Skyline::diagonalScalingWith(FloatArray* y)
+// Scales y by the diagonal of the receiver. Returns the receiver.
 {
-   int j ;
+	int j;
 
-   for (j=1 ; j<=size ; j++) {
+	for (j = 1; j <= size; j++) {
 #     ifdef DEBUG
-	 if (fabs(this->at(j,j)) < 0.000000000001) {
-	   printf ("error in Skyline::diagScaling : pivot %d is zero \n",j) ;
-	   exit(0) ;}
+		if (fabs(this->at(j, j)) < 0.000000000001) {
+			printf("error in Skyline::diagScaling : pivot %d is zero \n", j);
+			exit(0);
+		}
 #     endif
-      y->at(j) /= this->at(j,j) ;}
-   return this ;
+		y->at(j) /= this->at(j, j);
+	}
+	return this;
 }
 
 
-Skyline*  Skyline :: factorized ()
-   // Returns the receiver in  U(transp).D.U  Crout factorization form.
+Skyline*  Skyline::factorized()
+// Returns the receiver in  U(transp).D.U  Crout factorization form.
 {
-   int    i,j,highRow,start ;
-   double sum,temp ;
-   Column *columnI,*columnJ ;
+	int    i, j, highRow, start;
+	double sum, temp;
+	Column *columnI, *columnJ;
 
-   if (isFactorized)
-      return this ;
-					     // for every column, process :
-   for (j=2 ; j<=size ; j++) {
-					     // first, the off-diagonal terms
-      columnJ = columns[j-1] ;
-      highRow = columnJ->giveHighestRow() ;
-      for (i=highRow+1 ; i<j ; i++) {
-	 columnI = columns[i-1] ;
-	 start   = max (highRow,columnI->giveHighestRow()) ;
-	 columnJ->at(i) -= columnI->dot(columnJ,start,i-1) ;}
-					     // next, the diagonal term
-      sum = 0. ;
-      for (i=highRow ; i<j ; i++) {
-	 columnI = columns[i-1] ;
-	 temp    = columnJ->at(i) ;
-	 columnJ->at(i) = temp / columnI->at(i) ;
-	 sum           += temp * columnJ->at(i) ;}
-      columnJ->at(j) -= sum ;}
-   isFactorized = TRUE ;
-   return this ;
+	if (isFactorized)
+		return this;
+	// for every column, process :
+	for (j = 2; j <= size; j++) {
+		// first, the off-diagonal terms
+		columnJ = columns[j - 1];
+		highRow = columnJ->giveHighestRow();
+		for (i = highRow + 1; i < j; i++) {
+			columnI = columns[i - 1];
+			start = max(highRow, columnI->giveHighestRow());
+			columnJ->at(i) -= columnI->dot(columnJ, start, i - 1);
+		}
+		// next, the diagonal term
+		sum = 0.;
+		for (i = highRow; i < j; i++) {
+			columnI = columns[i - 1];
+			temp = columnJ->at(i);
+			columnJ->at(i) = temp / columnI->at(i);
+			sum += temp * columnJ->at(i);
+		}
+		columnJ->at(j) -= sum;
+	}
+	isFactorized = TRUE;
+	printYourself_large();
+	return this;
 }
 
 
@@ -275,6 +289,16 @@ void  Skyline :: printYourself ()
    copy = this -> AsFloatMatrix() ;
    copy -> printYourself() ;
    delete copy ;
+}
+
+void  Skyline::printYourself_large()
+// Prints the receiver on screen.
+{
+	FloatMatrix* copy;
+
+	copy = this->AsFloatMatrix();
+	copy->printYourself_large();
+	delete copy;
 }
 
 
