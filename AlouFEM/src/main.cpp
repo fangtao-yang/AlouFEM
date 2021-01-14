@@ -33,6 +33,9 @@ int main(int argc, char* argv[])
 	if (argc > 1) {
 
 
+		int n = 1;
+		std::cout << 9/2 << std::endl;
+
 
 		Domain* mesh;
 

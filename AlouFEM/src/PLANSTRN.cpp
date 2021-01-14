@@ -196,47 +196,52 @@ PolynomialMatrix*  PlaneStrain :: giveJacobianMatrix ()
    PolynomialXY *j11,*j12,*j21,*j22 ;
    double       x1,x2,x3,x4,y1,y2,y3,y4 ;
 
-   if (! jacobianMatrix) {
-      node1 = this -> giveNode(1) ;
-      node2 = this -> giveNode(2) ;
-      node3 = this -> giveNode(3) ;
-      node4 = this -> giveNode(4) ;
-      x1 = node1 -> giveCoordinate(1) ;
-      x2 = node2 -> giveCoordinate(1) ;
-      x3 = node3 -> giveCoordinate(1) ;
-      x4 = node4 -> giveCoordinate(1) ;
-      y1 = node1 -> giveCoordinate(2) ;
-      y2 = node2 -> giveCoordinate(2) ;
-      y3 = node3 -> giveCoordinate(2) ;
-      y4 = node4 -> giveCoordinate(2) ;
+	 if (!jacobianMatrix) {
+		 node1 = this->giveNode(1);
+		 node2 = this->giveNode(2);
+		 node3 = this->giveNode(3);
+		 node4 = this->giveNode(4);
+		 x1 = node1->giveCoordinate(1);
+		 x2 = node2->giveCoordinate(1);
+		 x3 = node3->giveCoordinate(1);
+		 x4 = node4->giveCoordinate(1);
+		 y1 = node1->giveCoordinate(2);
+		 y2 = node2->giveCoordinate(2);
+		 y3 = node3->giveCoordinate(2);
+		 y4 = node4->giveCoordinate(2);
 
-      j11 = new PolynomialXY(1) ;
-      j11 -> at(1) = (-x1 + x2 + x3 - x4) * 0.25 ;
-      j11 -> at(2) =   0.                        ;
-      j11 -> at(3) = ( x1 - x2 + x3 - x4) * 0.25 ;
-	  j11 -> printYourself();
+		 j11 = new PolynomialXY(1);
+		 j11->at(1) = (-x1 + x2 + x3 - x4) * 0.25;
+		 j11->at(2) = 0.;
+		 j11->at(3) = (x1 - x2 + x3 - x4) * 0.25;
+		 //j11 -> printYourself();
 
-      j12 = new PolynomialXY(1) ;
-      j12 -> at(1) = (-x1 - x2 + x3 + x4) * 0.25 ;
-      j12 -> at(2) = ( x1 - x2 + x3 - x4) * 0.25 ;
-      j12 -> at(3) =   0.                        ;
+			 //j11 = 0.25*(-x1 + x2 + x3 - x4) + 0 * ksi + ( x1 - x2 + x3 - x4)*eta
 
-      j21 = new PolynomialXY(1) ;
-      j21 -> at(1) = (-y1 + y2 + y3 - y4) * 0.25 ;
-      j21 -> at(2) =   0.                        ;
-      j21 -> at(3) = ( y1 - y2 + y3 - y4) * 0.25 ;
+		 j12 = new PolynomialXY(1);
+		 j12->at(1) = (-x1 - x2 + x3 + x4) * 0.25;
+		 j12->at(2) = (x1 - x2 + x3 - x4) * 0.25;
+		 j12->at(3) = 0.;
 
-      j22 = new PolynomialXY(1) ;
-      j22 -> at(1) = (-y1 - y2 + y3 + y4) * 0.25 ;
-      j22 -> at(2) = ( y1 - y2 + y3 - y4) * 0.25 ;
-      j22 -> at(3) =   0.                        ;
+		 j21 = new PolynomialXY(1);
+		 j21->at(1) = (-y1 + y2 + y3 - y4) * 0.25;
+		 j21->at(2) = 0.;
+		 j21->at(3) = (y1 - y2 + y3 - y4) * 0.25;
 
-      jacobianMatrix = new PolynomialMatrix(2,2) ;
-      jacobianMatrix -> at(1,1) = j11 ;
-      jacobianMatrix -> at(1,2) = j12 ;
-      jacobianMatrix -> at(2,1) = j21 ;
-      jacobianMatrix -> at(2,2) = j22 ;}
+		 j22 = new PolynomialXY(1);
+		 j22->at(1) = (-y1 - y2 + y3 + y4) * 0.25;
+		 j22->at(2) = (y1 - y2 + y3 - y4) * 0.25;
+		 j22->at(3) = 0.;
 
+		 jacobianMatrix = new PolynomialMatrix(2, 2);
+		 jacobianMatrix->at(1, 1) = j11;
+		 jacobianMatrix->at(1, 2) = j12;
+		 jacobianMatrix->at(2, 1) = j21;
+		 jacobianMatrix->at(2, 2) = j22;
+
+		 //[ j11 j21 ]
+		 //[ j12 j22 ]
+	 }
    return jacobianMatrix ;
 }
 

@@ -56,6 +56,7 @@ class Skyline
       int           giveNumberOfColumns ()           { return size ;}
       void          growTo (int) ;
       void          printYourself () ;
+			void          printYourself_large();
       Skyline*      reinitialized () ;
 } ;
 

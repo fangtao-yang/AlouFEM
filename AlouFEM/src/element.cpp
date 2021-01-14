@@ -65,10 +65,13 @@ void  Element :: assembleLhsAt (TimeStep* stepN)
    IntArray*    locArray ;
 
    elemLhs  = this -> ComputeLhsAt(stepN) ;
+	 //elemLhs->printYourself();
    systLhs  = domain -> giveLinearSystem() -> giveLhs() ;
+	 
    locArray = this -> giveLocationArray() ;
+	 //locArray->printYourself();
    systLhs -> assemble(elemLhs,locArray) ;
-
+	 //systLhs->printYourself_large();
    delete elemLhs ;
 }
 
@@ -373,6 +376,8 @@ FloatMatrix*  Element :: computeStiffnessMatrix ()
       db = d -> Times(b) ;
       stiffnessMatrix -> plusProduct(b,db,dV) ;
 
+			//stiffnessMatrix->printYourself();
+
       delete b ;
       delete db ;}
 
@@ -488,20 +493,22 @@ FloatMatrix*  Element :: giveConstitutiveMatrix ()
 }
 
 
-IntArray*  Element :: giveLocationArray ()
-   // Returns the location array of the receiver. This array is obtained by
-   // simply appending the location array of every node of the receiver.
+IntArray*  Element::giveLocationArray()
+// Returns the location array of the receiver. This array is obtained by
+// simply appending the location array of every node of the receiver.
 {
-   IntArray* nodalArray ;
-   int       i ;
+	IntArray* nodalArray;
+	int       i;
 
-   if (! locationArray) {
-      locationArray = new IntArray(0) ;
-      for (i=1 ; i<=numberOfNodes ; i++) {
-	 nodalArray    = this -> giveNode(i) -> giveLocationArray() ;
-	 locationArray = locationArray -> followedBy(nodalArray) ;}}
+	if (!locationArray) {
+		locationArray = new IntArray(0);
+		for (i = 1; i <= numberOfNodes; i++) {
+			nodalArray = this->giveNode(i)->giveLocationArray();
+			locationArray = locationArray->followedBy(nodalArray);
+		}
+	}
 
-   return locationArray ;
+	return locationArray;
 }
 
 

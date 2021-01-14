@@ -50,24 +50,26 @@ FloatArray*  FloatArray :: add (FloatArray* b)
 }
 
 
-void  FloatArray :: assemble (FloatArray* fe, IntArray* loc)
-   // Assembles the array fe (typically, the load vector of a finite
-   // element) to the receiver, using loc as location array.
+void  FloatArray::assemble(FloatArray* fe, IntArray* loc)
+// Assembles the array fe (typically, the load vector of a finite
+// element) to the receiver, using loc as location array.
 {
-   int i,ii,n ;
+	int i, ii, n;
 
 #  ifdef DEBUG
-      if ((n=fe->giveSize()) != loc->giveSize()) {
-	 printf ("dimensions of 'fe' and 'loc' mismatch \n") ;
-	 exit(0) ; }
-      this -> checkSizeTowards(loc) ;
+	if ((n = fe->giveSize()) != loc->giveSize()) {
+		printf("dimensions of 'fe' and 'loc' mismatch \n");
+		exit(0);
+	}
+	this->checkSizeTowards(loc);
 #  endif
 
-   n = fe->giveSize() ;
-   for (i=1 ; i<=n ; i++) {
-      ii = loc->at(i) ;
-      if (ii)                                  // if non 0 coefficient,
-	 this->at(ii) += fe->at(i) ; }         // then assemble
+	n = fe->giveSize();
+	for (i = 1; i <= n; i++) {
+		ii = loc->at(i);
+		if (ii)                                  // if non 0 coefficient,
+			this->at(ii) += fe->at(i);
+	}         // then assemble
 }
 
 

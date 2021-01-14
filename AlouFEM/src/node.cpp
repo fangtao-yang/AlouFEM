@@ -52,39 +52,46 @@ void  Node :: assembleYourLoadsAt (TimeStep* stepN)
 #  endif
 
    loadVector = this -> ComputeLoadVectorAt(stepN) ;
+
    if (loadVector) {
+		 loadVector->printYourself();
       system = (LinearSystem*) (domain->giveLinearSystem()) ;
       rhs    = system -> giveRhs() ;
+			rhs->printYourself(); //debug
       loc    = this -> giveLocationArray() ;
+			loc->printYourself();
       rhs -> assemble(loadVector,loc) ;
+			rhs->printYourself(); //debug
       delete loadVector ;}
 }
 
 
-FloatArray*  Node :: ComputeLoadVectorAt (TimeStep* stepN)
-   // Computes the vector of the nodal loads of the receiver.
+FloatArray*  Node::ComputeLoadVectorAt(TimeStep* stepN)
+// Computes the vector of the nodal loads of the receiver.
 {
-   int        i,n,nLoads ;
-   NodalLoad  *loadN ;
-   FloatArray *answer,*contribution ;
+	int        i, n, nLoads;
+	NodalLoad  *loadN;
+	FloatArray *answer, *contribution;
 
-   if (this -> giveLoadArray() -> isEmpty())
-      return NULL ;
-
-   else {
-      answer = new FloatArray(0) ;
-      nLoads = loadArray->giveSize() ;          // the node may be subjected
-      for (i=1 ; i<=nLoads ; i++) {             // to more than one load
-	 n            = loadArray -> at(i) ;
-	 loadN        = (NodalLoad*) domain->giveLoad(n) ;
-	 contribution = loadN -> ComputeValueAt(stepN) ;      // can be NULL
-	 answer -> add(contribution) ;
-	 delete contribution ;}
-      if (answer->giveSize())
-	 return answer ;
-      else {
-	 delete answer ;
-	 return NULL ;}}
+	if (this->giveLoadArray()->isEmpty())
+		return NULL;
+	else {
+		answer = new FloatArray(0);
+		nLoads = loadArray->giveSize();          // the node may be subjected
+		for (i = 1; i <= nLoads; i++) {             // to more than one load
+			n = loadArray->at(i);
+			loadN = (NodalLoad*)domain->giveLoad(n);
+			contribution = loadN->ComputeValueAt(stepN);      // can be NULL
+			answer->add(contribution);
+			delete contribution;
+		}
+		if (answer->giveSize())
+			return answer;
+		else {
+			delete answer;
+			return NULL;
+		}
+	}
 }
 
 
@@ -141,19 +148,20 @@ IntArray*  Node :: giveLoadArray ()
 }
 
 
-IntArray*  Node :: giveLocationArray ()
-   // Returns the location array of the receiver. Creates this array if it
-   // does not exist yet. The location array contains the equation number of
-   // every  degree of freedom of the receiver.
+IntArray*  Node::giveLocationArray()
+// Returns the location array of the receiver. Creates this array if it
+// does not exist yet. The location array contains the equation number of
+// every  degree of freedom of the receiver.
 {
-   int i ;
+	int i;
 
-   if (! locationArray) {
-      locationArray = new IntArray(this->giveNumberOfDofs()) ;
-      for (i=1 ; i<=numberOfDofs ; i++)
-	 locationArray->at(i) = this->giveDof(i)->giveEquationNumber() ;}
+	if (!locationArray) {
+		locationArray = new IntArray(this->giveNumberOfDofs());
+		for (i = 1; i <= numberOfDofs; i++)
+			locationArray->at(i) = this->giveDof(i)->giveEquationNumber();
+	}
 
-   return locationArray ;
+	return locationArray;
 }
 
 

@@ -142,22 +142,24 @@ BoundaryCondition*  Dof :: giveBc ()
 }
 
 
-int  Dof :: giveEquationNumber ()
-   // Returns the number of the equation in the linear system that corres-
-   // ponds to the receiver. The equation number is 0 if the receiver is
-   // subjected to a boundary condition, else it is n+1, where n is the
-   // equation number of the most recently numbered degree of freedom.
+int  Dof::giveEquationNumber()
+// Returns the number of the equation in the linear system that corres-
+// ponds to the receiver. The equation number is 0 if the receiver is
+// subjected to a boundary condition, else it is n+1, where n is the
+// equation number of the most recently numbered degree of freedom.
 {
-   LinearSystem* system ;
+	LinearSystem* system;
 
-   if (equationNumber == -1) {                      // not yet computed
-      if (this -> hasBc())
-	 equationNumber = 0 ;
-      else {
-	 system = (LinearSystem*) (node->giveDomain()->giveLinearSystem()) ;
-	 equationNumber = system -> giveUpdatedSize() ;}}
+	if (equationNumber == -1) {                      // not yet computed
+		if (this->hasBc())
+			equationNumber = 0;
+		else {
+			system = (LinearSystem*)(node->giveDomain()->giveLinearSystem());
+			equationNumber = system->giveUpdatedSize();
+		}
+	}
 
-   return equationNumber ;
+	return equationNumber;
 }
 
 

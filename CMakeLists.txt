@@ -21,7 +21,7 @@ if (DEFINED ENV{BOOST_ROOT})
 ENDIF()
 
 #Command to compile boost library
-#b2.exe --prefix=D:\Boost\boost_1_75_0_binary toolset=msvc-10.0 variant=debug link=static threading=multi runtime-link=shared install
+#b2.exe --prefix=D:\Boost\boost_1_75_0_binary toolset=msvc-14.0 variant=debug link=static threading=multi runtime-link=shared install
 FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem exception program_options log)
 
 SET(Boost_USE_DEBUG_LIBS ON)
