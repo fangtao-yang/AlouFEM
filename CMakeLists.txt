@@ -33,11 +33,23 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS}) 
 endif()
 
+
+FIND_PACKAGE(LATEX)
+
+FIND_PACKAGE(Python3 COMPONENTS Interpreter)
+IF (Python3_FOUND)
+  MESSAGE("Python3_EXECUTABLE -- ${Python3_EXECUTABLE}")
+ENDIF()
+
+
+
 ENABLE_TESTING()
 
 ADD_SUBDIRECTORY(vector_validation)
 ADD_SUBDIRECTORY(AlouFEM)
 ADD_SUBDIRECTORY(boost_test)
+
+ADD_SUBDIRECTORY(documentation)
 
 
 

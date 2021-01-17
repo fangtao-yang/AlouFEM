@@ -186,7 +186,15 @@ Skyline*  Skyline::diagonalScalingWith(FloatArray* y)
 	return this;
 }
 
+//begin{usr_doc}
+//begin{comment}
+/*
+Depending on the value of $x$ the equation \(f(x) = \sum_{ i = 0 }^{n} \frac{ a_i }{1 + x} \) may diverge or converge.
 
+\[f(x) = \sum_{ i = 0 }^{n} \frac{ a_i }{1 + x} \]
+*/
+//end{comment}
+//begin{code}
 Skyline*  Skyline::factorized()
 // Returns the receiver in  U(transp).D.U  Crout factorization form.
 {
@@ -220,7 +228,8 @@ Skyline*  Skyline::factorized()
 	printYourself_large();
 	return this;
 }
-
+//end{code}
+//end{usr_doc}
 
 Skyline*  Skyline :: forwardReductionWith (FloatArray* b)
    // Computes y, the solution of the system  U(transp).y = b , where U is
