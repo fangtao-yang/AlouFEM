@@ -1,0 +1,33 @@
+Skyline*  Skyline::factorized()
+// Returns the receiver in  U(transp).D.U  Crout factorization form.
+{
+	int    i, j, highRow, start;
+	double sum, temp;
+	Column *columnI, *columnJ;
+
+	if (isFactorized)
+		return this;
+	// for every column, process :
+	for (j = 2; j <= size; j++) {
+		// first, the off-diagonal terms
+		columnJ = columns[j - 1];
+		highRow = columnJ->giveHighestRow();
+		for (i = highRow + 1; i < j; i++) {
+			columnI = columns[i - 1];
+			start = max(highRow, columnI->giveHighestRow());
+			columnJ->at(i) -= columnI->dot(columnJ, start, i - 1);
+		}
+		// next, the diagonal term
+		sum = 0.;
+		for (i = highRow; i < j; i++) {
+			columnI = columns[i - 1];
+			temp = columnJ->at(i);
+			columnJ->at(i) = temp / columnI->at(i);
+			sum += temp * columnJ->at(i);
+		}
+		columnJ->at(j) -= sum;
+	}
+	isFactorized = TRUE;
+	printYourself_large();
+	return this;
+}
