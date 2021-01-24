@@ -108,23 +108,7 @@ void  Skyline::assemble(FloatMatrix* mat, IntArray* loc)
 }
 
 
-FloatArray*  Skyline :: backSubstitutionWith (FloatArray* y)
-   // Returns the solution x of the system U.x = y , where U is the receiver.
-   // nota : x overwrites y
-{
-   int     i,j,start ;
-   double  yJ ;
-   Column* columnJ ;
 
-   for (j=size ; j>0 ; j--) {
-      columnJ = this->giveColumn(j) ;
-      yJ      = y->at(j) ;
-      start   = columnJ->giveHighestRow() ;
-      for (i=start ; i<j ; i++)
-	 y->at(i) -= columnJ->at(i) * yJ ;}
-
-   return y ;
-}
 
 
 void  Skyline :: carveYourselfFor (Domain* aDomain)
@@ -169,29 +153,33 @@ void  Skyline :: createColumn (int j,int s)
 }
 
 
-Skyline*  Skyline::diagonalScalingWith(FloatArray* y)
-// Scales y by the diagonal of the receiver. Returns the receiver.
-{
-	int j;
-
-	for (j = 1; j <= size; j++) {
-#     ifdef DEBUG
-		if (fabs(this->at(j, j)) < 0.000000000001) {
-			printf("error in Skyline::diagScaling : pivot %d is zero \n", j);
-			exit(0);
-		}
-#     endif
-		y->at(j) /= this->at(j, j);
-	}
-	return this;
-}
 
 //begin{usr_doc}
 //begin{comment}
 /*
-Depending on the value of $x$ the equation \(f(x) = \sum_{ i = 0 }^{n} \frac{ a_i }{1 + x} \) may diverge or converge.
 
-\[f(x) = \sum_{ i = 0 }^{n} \frac{ a_i }{1 + x} \]
+
+
+\begin{subequations} 
+	\begin{align}
+		\label{eq1}
+ 		& g_{m_j,j}=k_{m_j,j} \\
+ 		\label{eq2}
+ 		& g_{ij}=k_{ij}-\sum^{i-1}_{r=m_m}l_{ri}g_{rj}, \qquad (i=m_j+1,...,j-1)
+	\end{align}
+\end{subequations}
+
+\begin{subequations}
+\begin{align}
+\label{eq1}
+& l_{ij}=\frac{g_{ij}}{d_{ij}}, \qquad (i=m_j,\,...\,,\,j-1) \\
+\label{eq2}
+& d_{jj}=k_{jj}-\sum^{j-1}_{r=m_j}l_{rj}g_{rj}
+\end{align}
+\end{subequations}
+
+
+
 */
 //end{comment}
 //begin{code}
@@ -231,7 +219,18 @@ Skyline*  Skyline::factorized()
 //end{code}
 //end{usr_doc}
 
-Skyline*  Skyline :: forwardReductionWith (FloatArray* b)
+//begin{usr_doc}
+//begin{comment}
+/*
+\begin{equation}
+V_i=R_i-\sum^{i-1}_{r=m_i}l_{ri}V_r
+\end{equation}
+
+
+*/
+//end{comment}
+//begin{code}
+Skyline*  Skyline::forwardReductionWith (FloatArray* b)
    // Computes y, the solution of the system  U(transp).y = b , where U is
    // the receiver (assumed to be in a factorized form). Returns the receiver.
    // nota : y overwrites b
@@ -264,6 +263,80 @@ Skyline*  Skyline :: forwardReductionWith (FloatArray* b)
 
    return this ;
 }
+//end{code}
+//end{usr_doc}
+
+//begin{usr_doc}
+//begin{comment}
+/*
+diagonalScalingwith is used to calculate $\boldsymbol{\bar{V}}$ using the equation \ref{skyline_diagscal}
+\begin{equation}
+\label{skyline_diagscal}
+\boldsymbol{\bar{V}}=\boldsymbol{D}^{-1}\boldsymbol{V}
+\end{equation}
+*/
+//end{comment}
+//begin{code}
+Skyline*  Skyline::diagonalScalingWith(FloatArray* y)
+// Scales y by the diagonal of the receiver. Returns the receiver.
+{
+	int j;
+
+	for (j = 1; j <= size; j++) {
+#     ifdef DEBUG
+		if (fabs(this->at(j, j)) < 0.000000000001) {
+			printf("error in Skyline::diagScaling : pivot %d is zero \n", j);
+			exit(0);
+		}
+#     endif
+		y->at(j) /= this->at(j, j);
+	}
+	return this;
+}
+//end{code}
+//end{usr_doc}
+
+
+
+//begin{usr_doc}
+//begin{comment}
+/*
+
+
+\begin{subequations}
+\begin{align}
+\label{eq1}
+& \bar{V}^{(i-1)}_{r}=\bar{V}^{(i)}_{r}-l_{ri}U_i, \qquad (r=m_i,\,...\,,\,i-1) &\\
+\label{eq2}
+& U_{i-1}=\bar{V}^{(i-1)}_{i-1}
+\end{align}
+\end{subequations}
+
+
+*/
+//end{comment}
+//begin{code}
+FloatArray*  Skyline::backSubstitutionWith(FloatArray* y)
+// Returns the solution x of the system U.x = y , where U is the receiver.
+// nota : x overwrites y
+{
+	int     i, j, start;
+	double  yJ;
+	Column* columnJ;
+
+	for (j = size; j>0; j--) {
+		columnJ = this->giveColumn(j);
+		yJ = y->at(j);
+		start = columnJ->giveHighestRow();
+		for (i = start; i<j; i++)
+			y->at(i) -= columnJ->at(i) * yJ;
+	}
+
+	return y;
+}
+//end{code}
+//end{usr_doc}
+
 
 
 void  Skyline :: growTo (int m)

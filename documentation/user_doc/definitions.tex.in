@@ -16,6 +16,7 @@
 \usepackage[newfloat,outputdir=@CMAKE_CURRENT_BINARY_DIR@/build]{minted}
 \usemintedstyle{vs}
 \usepackage{hyperref}
+\usepackage{amsmath}
 
 % Lorem Ipsum text, for demonstration purposes only
 \usepackage{lipsum} 

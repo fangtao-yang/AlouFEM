@@ -40,6 +40,8 @@ ADD_CUSTOM_TARGET(
   COMMENT "build AlouFEM user documentation"
 )
 
+ADD_DEPENDENCIES(user_doc extract)
+
 
 ADD_CUSTOM_COMMAND(
   TARGET user_doc
