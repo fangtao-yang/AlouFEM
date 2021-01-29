@@ -75,19 +75,19 @@ Domain :: ~Domain ()
 }
 
 
-void  Domain :: formTheSystemAt (TimeStep* stepN)
-   // Assembles the system of linear equations, at the current time step.
+void  Domain::formTheSystemAt(TimeStep* stepN)
+// Assembles the system of linear equations, at the current time step.
 {
-   int i,nNodes ;
+	int i, nNodes;
 
-   this -> giveNumberOfElements() ;
-   for (i=1 ; i<=numberOfElements ; i++)
-      this -> giveElement(i) -> assembleYourselfAt(stepN) ;
+	giveNumberOfElements();
+	for (i = 1; i <= numberOfElements; i++)
+		giveElement(i)->assembleYourselfAt(stepN);
 
-   nNodes = this -> readNumberOf("Node") ;
-	 _nb_node = nNodes;
-   for (i=1 ; i<=nNodes ; i++)
-      this -> giveNode(i) -> assembleYourLoadsAt(stepN) ;
+	nNodes = this->readNumberOf("Node");
+	_nb_node = nNodes;
+	for (i = 1; i <= nNodes; i++)
+		this->giveNode(i)->assembleYourLoadsAt(stepN);
 }
 
 

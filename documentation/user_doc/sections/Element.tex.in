@@ -1,0 +1,24 @@
+\section{Solution of Equilibrium Equations in Static Analysis}
+
+\input{./AlouFEM/src/skyline_cpp_Skyline_factorized.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/skyline_cpp_Skyline_factorized.out_code}
+
+
+\input{./AlouFEM/src/skyline_cpp_Skyline_forwardReductionWith.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/skyline_cpp_Skyline_forwardReductionWith.out_code}
+
+
+
+\input{./AlouFEM/src/skyline_cpp_Skyline_backSubstitutionWith.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/skyline_cpp_Skyline_backSubstitutionWith.out_code}
+
+\input{./AlouFEM/src/skyline_cpp_Skyline_diagonalScalingWith.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/skyline_cpp_Skyline_diagonalScalingWith.out_code}
+
+
+%\begin{codesnippet}
+%\begin{minted}[frame=single,breaklines]{c}
+%\input{./AlouFEM/src/test.eq}
+%\end{minted}
+%\caption{Skyline}%\label{lst:my_func}
+%\end{codesnippet}

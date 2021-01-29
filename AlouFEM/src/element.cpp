@@ -56,23 +56,23 @@ Element :: ~Element ()
 }
 
 
-void  Element :: assembleLhsAt (TimeStep* stepN)
-   // Assembles the left-hand side (stiffness matrix) of the receiver to
-   // the linear system' left-hand side, at stepN.
+void  Element::assembleLhsAt(TimeStep* stepN)
+// Assembles the left-hand side (stiffness matrix) of the receiver to
+// the linear system' left-hand side, at stepN.
 {
-   FloatMatrix* elemLhs ;
-   Skyline*     systLhs ;
-   IntArray*    locArray ;
+	FloatMatrix* elemLhs;
+	Skyline*     systLhs;
+	IntArray*    locArray;
 
-   elemLhs  = this -> ComputeLhsAt(stepN) ;
-	 //elemLhs->printYourself();
-   systLhs  = domain -> giveLinearSystem() -> giveLhs() ;
-	 
-   locArray = this -> giveLocationArray() ;
-	 //locArray->printYourself();
-   systLhs -> assemble(elemLhs,locArray) ;
-	 //systLhs->printYourself_large();
-   delete elemLhs ;
+	elemLhs = ComputeLhsAt(stepN);
+	//elemLhs->printYourself();
+	systLhs = domain->giveLinearSystem()->giveLhs();
+
+	locArray = giveLocationArray();
+	//locArray->printYourself();
+	systLhs->assemble(elemLhs, locArray);
+	//systLhs->printYourself_large();
+	delete elemLhs;
 }
 
 
@@ -93,18 +93,18 @@ void  Element :: assembleRhsAt (TimeStep* stepN)
 }
 
 
-void  Element :: assembleYourselfAt (TimeStep* stepN)
-   // Assembles the contributions of the receiver to the linear system, at
-   // time step stepN. This may, or may not, require assembling the receiver's
-   // left-hand side.
+void  Element::assembleYourselfAt(TimeStep* stepN)
+// Assembles the contributions of the receiver to the linear system, at
+// time step stepN. This may, or may not, require assembling the receiver's
+// left-hand side.
 {
 #  ifdef VERBOSE
-      printf ("assembling element %d\n",number) ;
+	printf("assembling element %d\n", number);
 #  endif
 
-   if (stepN -> requiresNewLhs())
-      this -> assembleLhsAt(stepN) ;
-   this -> assembleRhsAt(stepN) ;
+	if (stepN->requiresNewLhs())
+		assembleLhsAt(stepN);
+	assembleRhsAt(stepN);
 }
 
 
@@ -181,7 +181,7 @@ FloatMatrix*  Element :: ComputeConsistentMassMatrix ()
 }
 
 
-FloatMatrix*  Element :: ComputeLhsAt (TimeStep* stepN)
+FloatMatrix*  Element::ComputeLhsAt (TimeStep* stepN)
    // Computes the contribution of the receiver to the left-hand side of the
    // linear system.
 {
@@ -189,12 +189,13 @@ FloatMatrix*  Element :: ComputeLhsAt (TimeStep* stepN)
 
    scheme = domain -> giveTimeIntegrationScheme() ;
    if (scheme -> isStatic())
-      return  this -> ComputeStaticLhsAt (stepN) ;
+      return  ComputeStaticLhsAt (stepN) ;
    else if (scheme -> isNewmark())
-      return  this -> ComputeNewmarkLhsAt(stepN) ;
+      return  ComputeNewmarkLhsAt(stepN) ;
    else {
       printf ("Error : unknown time integration scheme : %c\n",scheme) ;
-      exit(0) ;}
+      exit(0) ;
+	 }
    return new FloatMatrix();
 }
 
@@ -359,7 +360,7 @@ FloatArray*  Element :: ComputeStaticRhsAt (TimeStep* stepN)
 }
 
 
-FloatMatrix*  Element :: computeStiffnessMatrix ()
+FloatMatrix*  Element::computeStiffnessMatrix ()
    // Computes numerically the stiffness matrix of the receiver.
 {
    int         i ;
@@ -370,7 +371,7 @@ FloatMatrix*  Element :: computeStiffnessMatrix ()
    stiffnessMatrix = new FloatMatrix() ;
    for (i=0 ; i<numberOfGaussPoints ; i++) {
       gp = gaussPointArray[i] ;
-      b  = this -> ComputeBmatrixAt(gp) ;
+      b  = ComputeBmatrixAt(gp) ;
       d  = this -> giveConstitutiveMatrix() ;
       dV = this -> computeVolumeAround(gp) ;
       db = d -> Times(b) ;
@@ -549,11 +550,11 @@ Node*  Element :: giveNode (int i)
 }
 
 
-FloatMatrix*  Element :: giveStiffnessMatrix ()
+FloatMatrix*  Element::giveStiffnessMatrix ()
    // Returns the stiffness matrix of the receiver.
 {
    if (! stiffnessMatrix)
-      this -> computeStiffnessMatrix() ;
+      computeStiffnessMatrix() ;
    return stiffnessMatrix ;
 }
 

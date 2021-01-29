@@ -23,8 +23,14 @@ PlaneStrain :: PlaneStrain (int n, Domain* aDomain)
    this -> computeGaussPoints() ;
 }
 
-
-FloatMatrix*  PlaneStrain :: ComputeBmatrixAt (GaussPoint *aGaussPoint)
+//begin{usr_doc}
+//begin{comment}
+/*
+cumpute the element strain-displacement materix $\boldsymbol{\bar{B}}$
+*/
+//end{comment}
+//begin{code}
+FloatMatrix*  PlaneStrain::ComputeBmatrixAt (GaussPoint *aGaussPoint)
    // Returns the [3x8] strain-displacement matrix {B} of the receiver, eva-
    // luated at aGaussPoint.
 {
@@ -82,7 +88,8 @@ FloatMatrix*  PlaneStrain :: ComputeBmatrixAt (GaussPoint *aGaussPoint)
 
    return answer ;
 }
-
+//end{code}
+//end{usr_doc}
    
 FloatMatrix*  PlaneStrain :: computeConstitutiveMatrix ()
    // Returns the [3x3] elasticity matrix {E} of the receiver.
