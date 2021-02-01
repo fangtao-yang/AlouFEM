@@ -53,21 +53,21 @@ so we can derive the partial derivatives of the shape function in terms of the c
   \label{eq:h_rs_quad}
   \begin{align}
     \label{eq:h1_r_quad}
-    \frac{\partial h_1}{\partial r}=\frac{1}{4}(1+s) \\
+    &\frac{\partial h_1}{\partial r}=\frac{1}{4}(1+s) \\
     \label{eq:h2_r_quad}
-    \frac{\partial h_2}{\partial r}=-\frac{1}{4}(1+s) \\
+    &\frac{\partial h_2}{\partial r}=-\frac{1}{4}(1+s) \\
 		\label{eq:h3_r_quad}
-		\frac{\partial h_3}{\partial r}=-\frac{1}{4}(1-s) \\
+		&\frac{\partial h_3}{\partial r}=-\frac{1}{4}(1-s) \\
 		\label{eq:h4_r_quad}
-		\frac{\partial h_4}{\partial r}=\frac{1}{4}(1-s) \\
+		&\frac{\partial h_4}{\partial r}=\frac{1}{4}(1-s) \\
 		\label{eq:h1_s_quad}
-		\frac{\partial h_1}{\partial s}=\frac{1}{4}(1+r) \\
+		&\frac{\partial h_1}{\partial s}=\frac{1}{4}(1+r) \\
 		\label{eq:h2_s_quad}
-		\frac{\partial h_2}{\partial s}=\frac{1}{4}(1-r) \\
+		&\frac{\partial h_2}{\partial s}=\frac{1}{4}(1-r) \\
 		\label{eq:h3_s_quad}
-		\frac{\partial h_3}{\partial s}=-\frac{1}{4}(1-r) \\
+		&\frac{\partial h_3}{\partial s}=-\frac{1}{4}(1-r) \\
 		\label{eq:h4_s_quad}
-		\frac{\partial h_4}{\partial s}=-\frac{1}{4}(1+r) \\
+		&\frac{\partial h_4}{\partial s}=-\frac{1}{4}(1+r) \\
   \end{align}
 \end{subequations}
 
@@ -192,7 +192,7 @@ whose elements are expressed as in Eq. \ref{eq:B_elements_quad}:
 \end{subequations}
 
 Now we can compute the value of all elements in matrix $\boldsymbol{B}$ at the Gauss Point $(r,s)$, 
-by substituting the values in Eq. \ref{Jacobi_inv_2D_1} and Eq. \ref{h_rs_quad} into Eq. \ref{B_elements_quad}.
+by substituting the values in Eq. \ref{eq:Jacobi_inv_2D_1} and Eq. \ref{eq:h_rs_quad} into Eq. \ref{eq:B_elements_quad}.
 
 */
 //end{comment}
@@ -222,14 +222,22 @@ FloatMatrix*  PlaneStrain::ComputeBmatrixAt (GaussPoint *aGaussPoint)
    s_y = (*J_inv_rs)(2)[2];
 
    // hi is the ith shape function of the element, hi_r or hi_s are the partial derivatives of the shape function in terms of the coordinate (r,s)
-   h1_r = (-1. + s) * 0.25 ;
-   h2_r = ( 1. - s) * 0.25 ;
-   h3_r = ( 1. + s) * 0.25 ;
-   h4_r = (-1. - s) * 0.25 ;
-   h1_s = (-1. + r) * 0.25 ;
-   h2_s = (-1. - r) * 0.25 ;
-   h3_s = ( 1. + r) * 0.25 ;
-   h4_s = ( 1. - r) * 0.25 ;
+   //h1_r = (-1. + s) * 0.25 ;
+   //h2_r = ( 1. - s) * 0.25 ;
+   //h3_r = ( 1. + s) * 0.25 ;
+   //h4_r = (-1. - s) * 0.25 ;
+   //h1_s = (-1. + r) * 0.25 ;
+   //h2_s = (-1. - r) * 0.25 ;
+   //h3_s = ( 1. + r) * 0.25 ;
+   //h4_s = ( 1. - r) * 0.25 ;
+	 h1_r = (1. + s) * 0.25 ;
+	 h2_r = -( 1. + s) * 0.25 ;
+	 h3_r = -( 1. - s) * 0.25 ;
+	 h4_r = (1. - s) * 0.25 ;
+	 h1_s = (1. + r) * 0.25 ;
+	 h2_s = (1. - r) * 0.25 ;
+	 h3_s = -( 1. - r) * 0.25 ;
+	 h4_s = -( 1. + r) * 0.25 ;
 
    // B matrix  -  3 rows : epsilon-X, epsilon-Y, gamma-XY  :
 	 FloatMatrix* B = new FloatMatrix(3,8) ;
