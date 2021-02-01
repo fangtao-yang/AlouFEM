@@ -29,6 +29,7 @@ class FloatMatrix : public Matrix
 
    protected :
       double*  values ;
+			int val_offset;
 
    public:
       FloatMatrix (int n,int m):Matrix(n,m) {values = allocDouble(n*m);}
@@ -40,6 +41,8 @@ class FloatMatrix : public Matrix
 #else
       virtual double&   at (int i,int j)    {return values[(j-1)*nRows+i-1];}
 #endif
+			virtual FloatMatrix& operator()(int i);
+			virtual double& operator[](int j)const { return values[(j - 1)*nRows + val_offset - 1]; }
       virtual FloatMatrix*  GiveCopy () ;
       double        giveDeterminant () ;
       FloatMatrix*  GiveInverse () ;

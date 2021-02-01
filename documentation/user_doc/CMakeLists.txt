@@ -11,6 +11,7 @@ FILE(GLOB section_tex_in ${CMAKE_CURRENT_SOURCE_DIR}/sections/*.tex.in)
 
 FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sections)
 FILE(COPY ${section_tex} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/sections)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/sections/Element.tex.in ${CMAKE_CURRENT_BINARY_DIR}/sections/Element.tex)
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/sections/LinEqSolve.tex.in ${CMAKE_CURRENT_BINARY_DIR}/sections/LinEqSolve.tex)
 
 
