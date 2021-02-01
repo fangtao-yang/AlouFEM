@@ -1,0 +1,150 @@
+\section{Equations of different elements}
+
+The interpolation of the coordinates can be expressed as in Eq. \ref{eq:crd_interpolation}:
+\begin{subequations}
+  \label{eq:crd_interpolation}
+  \begin{align}
+    \label{eq:crd_interpolation_x}
+    & x=\sum^{q}_{i=1}h_ix_i &\\
+    \label{eq:crd_interpolation_y}
+    & y=\sum^{q}_{i=1}h_iy_i &\\
+    \label{eq:crd_interpolation_z}
+    & z=\sum^{q}_{i=1}h_iz_i
+  \end{align}
+\end{subequations}
+
+We use the same interpolation method to interpolate displacement, as in Eq. \ref{eq:disp_interpolation}:
+\begin{subequations}
+  \label{eq:disp_interpolation}
+  \begin{align}
+    \label{eq:disp_interpolation_u}
+    & u=\sum^{q}_{i=1}h_iu_i \\
+    \label{eq:disp_interpolation_v}
+    & v=\sum^{q}_{i=1}h_iv_i \\
+	\label{eq:disp_interpolation_w}
+    & w=\sum^{q}_{i=1}h_iw_i 
+  \end{align}
+\end{subequations}
+
+\subsection{2D elements}
+
+
+The Jacobian matrix of a 2D element is defined as in Eq. \ref{eq:Jacobi_2D}:
+
+\begin{equation} \label{eq:Jacobi_2D}
+\frac{\boldsymbol{\partial}}{\boldsymbol{\partial r}}=\boldsymbol{J}\frac{\boldsymbol{\partial}}{\boldsymbol{\partial x}}
+\qquad or \qquad
+\begin{bmatrix}
+\frac{\partial}{\partial r} \\
+\frac{\partial}{\partial s}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{\partial x}{\partial r} & \frac{\partial y}{\partial r}\\
+\frac{\partial x}{\partial s} & \frac{\partial y}{\partial s}
+\end{bmatrix}
+\begin{bmatrix}
+\frac{\partial}{\partial x} \\
+\frac{\partial}{\partial y}
+\end{bmatrix}
+\end{equation}
+
+Similarly, the inverse matrix of 2D Jacobian can be defined as in Eq. \ref{eq:Jacobi_inv_2D}:
+
+\begin{equation} \label{eq:Jacobi_inv_2D}
+\frac{\boldsymbol{\partial}}{\boldsymbol{\partial x}}=\boldsymbol{J}^{-1}\frac{\boldsymbol{\partial}}{\boldsymbol{\partial r}}
+\qquad or \qquad
+\begin{bmatrix}
+\frac{\partial}{\partial x} \\
+\frac{\partial}{\partial y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{\partial r}{\partial x} & \frac{\partial r}{\partial y}\\
+\frac{\partial s}{\partial x} & \frac{\partial s}{\partial y}
+\end{bmatrix}
+\begin{bmatrix}
+\frac{\partial}{\partial r} \\
+\frac{\partial}{\partial s}
+\end{bmatrix}
+\end{equation}
+
+The strain tensor in 2D problem can be defined as in Eq. \ref{eq:strain_def}:
+
+\begin{equation}
+  \label{eq:strain_def}
+  \begin{aligned}
+    \boldsymbol{\varepsilon}&=
+    \begin{bmatrix} 
+      \varepsilon_{xx} \\ 
+      \varepsilon_{yy} \\
+      \gamma_{xy}
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+      \frac{\partial u}{\partial x} \\ 
+      \frac{\partial v}{\partial y} \\
+      \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x}
+    \end{bmatrix}
+    =
+    \begin{bmatrix} 
+      \frac{\partial u}{\partial r}\frac{\partial r}{\partial x}+\frac{\partial u}{\partial s}\frac{\partial s}{\partial x} \\ 
+      \frac{\partial v}{\partial r}\frac{\partial r}{\partial y}+\frac{\partial v}{\partial s}\frac{\partial s}{\partial y} \\
+      \frac{\partial u}{\partial r}\frac{\partial r}{\partial y}+\frac{\partial u}{\partial s}\frac{\partial s}{\partial y} 
+	  +\frac{\partial v}{\partial r}\frac{\partial r}{\partial x}+\frac{\partial v}{\partial s}\frac{\partial s}{\partial x}
+    \end{bmatrix}
+	\\
+	&=
+	\begin{bmatrix} 
+      \frac{\partial r}{\partial x} & 0 & \frac{\partial s}{\partial x} & 0 \\ 
+	  0 & \frac{\partial r}{\partial y} & 0 & \frac{\partial s}{\partial y} \\
+      \frac{\partial r}{\partial y} & \frac{\partial r}{\partial x} & \frac{\partial s}{\partial y} & \frac{\partial s}{\partial x}
+    \end{bmatrix}
+	\begin{bmatrix} 
+	  \frac{\partial u}{\partial r} \\
+	  \frac{\partial v}{\partial r} \\
+	  \frac{\partial u}{\partial s} \\
+	  \frac{\partial v}{\partial s}
+	\end{bmatrix}
+  \end{aligned}
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Quadrilateral element}
+
+In Quadrilateral element, we use the shape functions as in Eq. \ref{eq:shapefunction_quad}
+\begin{subequations}
+\label{eq:shapefunction_quad}
+\begin{align}
+\label{eq:shapefunction_quad1}
+& h_1=\frac{1}{4}(1+r)(1+s) &\\
+\label{eq:shapefunction_quad2}
+& h_2=\frac{1}{4}(1-r)(1+s) &\\
+\label{eq:shapefunction_quad3}
+& h_3=\frac{1}{4}(1-r)(1-s) &\\
+\label{eq:shapefunction_quad4}
+& h_4=\frac{1}{4}(1+r)(1-s)
+\end{align}
+\end{subequations}
+
+\input{./AlouFEM/src/planstrn_cpp_PlaneStrain_giveJacobianMatrix.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/planstrn_cpp_PlaneStrain_giveJacobianMatrix.out_code}
+
+
+
+\input{./AlouFEM/src/planstrn_cpp_PlaneStrain_ComputeBmatrixAt.out_comment}
+\inputminted{c++}{@CMAKE_CURRENT_BINARY_DIR@/AlouFEM/src/planstrn_cpp_PlaneStrain_ComputeBmatrixAt.out_code}
+
+

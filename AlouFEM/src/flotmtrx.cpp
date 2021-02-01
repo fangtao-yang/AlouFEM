@@ -16,6 +16,11 @@ double&  FloatMatrix :: at (int i,int j)
 }
 #endif
 
+FloatMatrix& FloatMatrix::operator()(int i)
+{ 
+	val_offset = i;
+	return (*this); 
+}
 
 FloatMatrix*  FloatMatrix :: GiveCopy ()
    // Creates and returns a copy of the receiver.
