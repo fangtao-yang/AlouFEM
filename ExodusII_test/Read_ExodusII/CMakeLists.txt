@@ -1,0 +1,4 @@
+
+SET(TEST_EXE Read_ExodusII)
+ADD_EXECUTABLE(${TEST_EXE} main.cpp)
+
