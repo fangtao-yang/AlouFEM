@@ -11,6 +11,7 @@
 	|	ExodusII_DIR 		| 	C:\AlouFEM_contrib\AlouFEM_Lib\ExodusII\install			|
 	(3) if Cmake is already open, you need to close it and reopen Cmake to load previous setups.
 
+
 2. if you want to generate documentation extracted from codes (by building project "user_doc"), you need to set up Python3 and LaTeX:
 	(1) install Python3 on your computer (make sure you have write permission to its installation directory)
 	(2) install "pygments" package using pip tool provided by Python (cmd: pip install pygments); if your computer is not connected to internet, go to AlouFEM_contrib/AlouFEM_Lib/pygments to find what you need 
